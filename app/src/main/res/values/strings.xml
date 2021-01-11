@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Notesy</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_add_web_link">Add web link</string>
+    <string name="content_desc_add_image">Add image</string>
+    <string name="content_desc_add_note">Add note</string>
 </resources>
