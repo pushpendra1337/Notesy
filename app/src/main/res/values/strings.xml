@@ -4,4 +4,6 @@
     <string name="content_desc_add_web_link">Add web link</string>
     <string name="content_desc_add_image">Add image</string>
     <string name="content_desc_add_note">Add note</string>
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_save_note">Save note</string>
 </resources>
