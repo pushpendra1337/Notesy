@@ -1,8 +1,10 @@
-package net.intensecorp.notesy;
+package net.intensecorp.notesy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import net.intensecorp.notesy.R;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package net.intensecorp.notesy;
+package net.intensecorp.notesy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import net.intensecorp.notesy.R;
+import net.intensecorp.notesy.activities.CreateNoteActivity;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ADD_NOTE = 1;
