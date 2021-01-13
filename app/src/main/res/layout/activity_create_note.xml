@@ -53,17 +53,18 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
+                android:background="@drawable/bg_input_field"
                 android:fontFamily="@font/ubuntu_bold"
                 android:hint="Note Title"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="text"
+                android:padding="@dimen/_10sdp"
                 android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorTextHint"
                 android:textSize="@dimen/_16ssp"
-                app:layout_constraintTop_toBottomOf="@id/imageView_back"/>
+                app:layout_constraintTop_toBottomOf="@id/imageView_back" />
 
             <TextView
                 android:id="@+id/textView_timestamp"
@@ -75,22 +76,23 @@
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="@id/textInputEditText_note_title"
                 app:layout_constraintStart_toStartOf="@id/textInputEditText_note_title"
-                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_title"/>
+                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_title" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditText_note_subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
+
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
+                android:background="@drawable/bg_subtitle_input_field"
                 android:fontFamily="@font/ubuntu_medium"
                 android:hint="Note Subtitle"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
+                android:padding="@dimen/_10sdp"
                 android:paddingTop="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_8sdp"
                 android:textColor="@color/colorNoteSubtitleText"
@@ -98,34 +100,35 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/view_subtitle_highlighter"
-                app:layout_constraintTop_toBottomOf="@id/textView_timestamp"/>
+                app:layout_constraintTop_toBottomOf="@id/textView_timestamp" />
 
             <View
                 android:id="@+id/view_subtitle_highlighter"
                 android:layout_width="@dimen/_5sdp"
                 android:layout_height="0dp"
-                android:background="@drawable/bg_subtitle_highlighter"
                 android:layout_marginStart="@dimen/_12sdp"
+                android:background="@drawable/highlighter_subtitle"
                 app:layout_constraintBottom_toBottomOf="@id/textInputEditText_note_subtitle"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textInputEditText_note_subtitle"/>
+                app:layout_constraintTop_toTopOf="@id/textInputEditText_note_subtitle" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditText_note_content"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@null"
+                android:background="@drawable/bg_input_field"
                 android:fontFamily="@font/ubuntu_regular"
+                android:gravity="top"
                 android:hint="Type your note here..."
                 android:imeOptions="actionDone"
-                android:gravity="top"
                 android:includeFontPadding="false"
                 android:inputType="textMultiLine"
                 android:minHeight="@dimen/_100sdp"
+                android:padding="@dimen/_10sdp"
                 android:paddingTop="@dimen/_8sdp"
                 android:paddingBottom="@dimen/_8sdp"
                 android:textColor="@color/colorNoteSubtitleText"
@@ -133,7 +136,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_subtitle"/>
+                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_subtitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
