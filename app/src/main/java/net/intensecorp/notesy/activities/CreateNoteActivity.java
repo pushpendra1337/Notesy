@@ -1,15 +1,18 @@
 package net.intensecorp.notesy.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.textfield.TextInputEditText;
 
 import net.intensecorp.notesy.R;
@@ -71,6 +74,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setNoteContent(mNoteContentInputField.getText().toString());
         note.setTimestamp(mTimestampField.getText().toString());
 
+        @SuppressLint("StaticFieldLeak")
         class saveNoteTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -87,5 +91,20 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
         new saveNoteTask().execute();
+    }
+
+    public void initMiscellaneous() {
+        final LinearLayout layoutMiscellaneous = findViewById(R.id.linearLlayout_miscellaneous);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(layoutMiscellaneous);
+        layoutMiscellaneous.findViewById(R.id.textView_miscellaneous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     }
 }
