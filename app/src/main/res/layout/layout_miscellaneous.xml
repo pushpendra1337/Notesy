@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLlayout_miscellaneous"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_miscellaneous"
     android:orientation="vertical"
     app:behavior_peekHeight="@dimen/_40sdp"
@@ -40,7 +41,7 @@
                 android:background="@drawable/bg_note_color_1" />
 
             <ImageView
-                android:id="@+id/imageView_color_5"
+                android:id="@+id/imageView_color_1"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:padding="@dimen/_10sdp"
@@ -132,11 +133,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
             android:fontFamily="@font/ubuntu_medium"
+            android:includeFontPadding="false"
             android:text="Pick Color"
-            android:textSize="@dimen/_13ssp"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_13ssp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_add_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:gravity="center_vertical"
+        android:layout_margin="@dimen/_10sdp"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:src="@drawable/ic_baseline_image_24"
+            app:tint="@color/colorIcons" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu_medium"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:text="Add Image"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorIcons"/>
     </LinearLayout>
 
 </LinearLayout>
