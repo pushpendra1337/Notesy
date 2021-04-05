@@ -84,7 +84,6 @@
                 android:id="@+id/textInputEditText_note_subtitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@drawable/bg_subtitle_input_field"
@@ -114,6 +113,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/textInputEditText_note_subtitle" />
 
+            <ImageView
+                android:id="@+id/imageView_note_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_subtitle"/>
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditText_note_content"
                 android:layout_width="match_parent"
@@ -138,12 +148,12 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textInputEditText_note_subtitle" />
+                app:layout_constraintTop_toBottomOf="@id/imageView_note_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-    <include layout="@layout/layout_miscellaneous"/>
+    <include layout="@layout/layout_miscellaneous" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
