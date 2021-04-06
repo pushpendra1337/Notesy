@@ -101,7 +101,7 @@
             app:tint="@color/colorIcons" />
 
         <ImageView
-            android:id="@+id/image_add_web_link"
+            android:id="@+id/imageView_add_web_link"
             android:layout_width="@dimen/_23sdp"
             android:layout_height="@dimen/_23sdp"
             android:layout_marginStart="@dimen/_15sdp"
