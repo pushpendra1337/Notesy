@@ -84,6 +84,24 @@ public class CreateNoteActivity extends AppCompatActivity {
             setViewOrUpdateNote();
         }
 
+        findViewById(R.id.imageView_button_remove_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteWebUrl.setText(null);
+                mNoteWebUrlLayout.setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.imageView_button_remove_url).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNoteImage.setImageBitmap(null);
+                mNoteImage.setVisibility(View.GONE);
+                findViewById(R.id.imageView_button_remove_image).setVisibility(View.GONE);
+                mSelectedImagePath = "";
+            }
+        });
+
         initMiscellaneous();
         setSubtitleHighlighterColor();
 
@@ -111,6 +129,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         if (mAlreadyAvailableNote.getImagePath() != null && !mAlreadyAvailableNote.getImagePath().trim().isEmpty()) {
             mNoteImage.setImageBitmap(BitmapFactory.decodeFile(mAlreadyAvailableNote.getImagePath()));
             mNoteImage.setVisibility(View.VISIBLE);
+            findViewById(R.id.imageView_button_remove_image).setVisibility(View.VISIBLE);
             mSelectedImagePath = mAlreadyAvailableNote.getImagePath();
         }
 
@@ -329,6 +348,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         mNoteImage.setImageBitmap(bitmap);
                         mNoteImage.setVisibility(View.VISIBLE);
+                        findViewById(R.id.imageView_button_remove_image).setVisibility(View.VISIBLE);
                         mSelectedImagePath = getPathFromUri(selectedImageUri);
                     } catch (Exception exception) {
                         Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
