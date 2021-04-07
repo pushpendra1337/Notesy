@@ -88,18 +88,18 @@ public class CreateNoteActivity extends AppCompatActivity {
         findViewById(R.id.imageView_button_remove_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNoteWebUrl.setText(null);
-                mNoteWebUrlLayout.setVisibility(View.GONE);
+                mNoteImage.setImageBitmap(null);
+                mNoteImage.setVisibility(View.GONE);
+                findViewById(R.id.imageView_button_remove_image).setVisibility(View.GONE);
+                mSelectedImagePath = "";
             }
         });
 
         findViewById(R.id.imageView_button_remove_url).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNoteImage.setImageBitmap(null);
-                mNoteImage.setVisibility(View.GONE);
-                findViewById(R.id.imageView_button_remove_image).setVisibility(View.GONE);
-                mSelectedImagePath = "";
+                mNoteWebUrl.setText(null);
+                mNoteWebUrlLayout.setVisibility(View.GONE);
             }
         });
 
