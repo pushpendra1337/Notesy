@@ -57,6 +57,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private TextView mNoteWebUrl;
     private LinearLayout mNoteWebUrlLayout;
     private AlertDialog mAddUrlDialog;
+    private AlertDialog mDeleteNoteDialog;
     private Note mAlreadyAvailableNote;
 
     @Override
@@ -187,7 +188,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     public void initMiscellaneous() {
-        final LinearLayout layoutMiscellaneous = findViewById(R.id.linearLlayout_miscellaneous);
+        final LinearLayout layoutMiscellaneous = findViewById(R.id.linearLayout_miscellaneous);
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(layoutMiscellaneous);
         layoutMiscellaneous.findViewById(R.id.textView_miscellaneous).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,6 +310,17 @@ public class CreateNoteActivity extends AppCompatActivity {
                 showAddUrlDialog();
             }
         });
+
+        if (mAlreadyAvailableNote != null) {
+            layoutMiscellaneous.findViewById(R.id.linearLayout_delete_note).setVisibility(View.VISIBLE);
+            layoutMiscellaneous.findViewById(R.id.linearLayout_delete_note).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    showDeleteNoteDialog();
+                }
+            });
+        }
     }
 
     private void setSubtitleHighlighterColor() {
@@ -356,6 +368,50 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void showDeleteNoteDialog() {
+        if (mDeleteNoteDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateNoteActivity.this);
+            View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog_delete_note, (ViewGroup) findViewById(R.id.constraintLayout_delete_note_dialog_container));
+            builder.setView(view);
+            mDeleteNoteDialog = builder.create();
+
+            if (mDeleteNoteDialog.getWindow() != null) {
+                mDeleteNoteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            view.findViewById(R.id.textView_button_delete_note).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    class DeleteNoteTask extends AsyncTask<Void, Void, Void> {
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            NotesDatabase.getDatabase(getApplicationContext()).noteDao().deleteNote(mAlreadyAvailableNote);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            Intent intent = new Intent();
+                            intent.putExtra("isNoteDeleted", true);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+                    new DeleteNoteTask().execute();
+                }
+            });
+
+            view.findViewById(R.id.textView_button_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDeleteNoteDialog.dismiss();
+                }
+            });
+        }
+        mDeleteNoteDialog.show();
     }
 
     private String getPathFromUri(Uri contentUri) {
