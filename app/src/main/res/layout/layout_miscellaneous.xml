@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLlayout_miscellaneous"
+    android:id="@+id/linearLayout_miscellaneous"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_miscellaneous"
@@ -138,14 +138,15 @@
             android:text="Pick Color"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_13ssp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout_add_image"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
-        android:gravity="center_vertical"
         android:layout_margin="@dimen/_10sdp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -158,20 +159,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu_medium"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="Add Image"
+            android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/colorIcons"/>
+            android:text="Add Image"
+            android:textColor="@color/colorIcons"
+            android:textSize="@dimen/_12ssp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout_add_url"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
-        android:gravity="center_vertical"
         android:layout_margin="@dimen/_10sdp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -184,12 +186,41 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu_medium"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="Add URL"
+            android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/colorIcons"/>
+            android:text="Add URL"
+            android:textColor="@color/colorIcons"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_delete_note"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:src="@drawable/ic_baseline_delete_24"
+            app:tint="@color/colorIcons" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/ubuntu_medium"
+            android:includeFontPadding="false"
+            android:text="Delete Note"
+            android:textColor="@color/colorIcons"
+            android:textSize="@dimen/_12ssp" />
+
     </LinearLayout>
 
 </LinearLayout>
