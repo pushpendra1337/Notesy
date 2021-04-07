@@ -47,6 +47,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
+
     private TextInputEditText mNoteTitleInputField, mNoteSubtitleInputField, mNoteContentInputField;
     private TextView mTimestampField;
     private String mSelectedNoteColor;
@@ -56,6 +57,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private TextView mNoteWebUrl;
     private LinearLayout mNoteWebUrlLayout;
     private AlertDialog mAddUrlDialog;
+    private Note mAlreadyAvailableNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         mSelectedNoteColor = "#333333";
         mSelectedImagePath = "";
 
+        if (getIntent().getBooleanExtra("isViewOrUpdate", false)) {
+            mAlreadyAvailableNote = (Note) getIntent().getSerializableExtra("note");
+            setViewOrUpdateNote();
+        }
+
         initMiscellaneous();
         setSubtitleHighlighterColor();
 
@@ -93,6 +100,24 @@ public class CreateNoteActivity extends AppCompatActivity {
                 saveNote();
             }
         });
+    }
+
+    private void setViewOrUpdateNote() {
+        mNoteTitleInputField.setText(mAlreadyAvailableNote.getTitle());
+        mNoteSubtitleInputField.setText(mAlreadyAvailableNote.getSubtitle());
+        mNoteContentInputField.setText(mAlreadyAvailableNote.getNoteContent());
+        mTimestampField.setText(mAlreadyAvailableNote.getTimestamp());
+
+        if (mAlreadyAvailableNote.getImagePath() != null && !mAlreadyAvailableNote.getImagePath().trim().isEmpty()) {
+            mNoteImage.setImageBitmap(BitmapFactory.decodeFile(mAlreadyAvailableNote.getImagePath()));
+            mNoteImage.setVisibility(View.VISIBLE);
+            mSelectedImagePath = mAlreadyAvailableNote.getImagePath();
+        }
+
+        if (mAlreadyAvailableNote.getWebLink() != null && !mAlreadyAvailableNote.getWebLink().trim().isEmpty()) {
+            mNoteWebUrl.setText(mAlreadyAvailableNote.getWebLink());
+            mNoteWebUrlLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void saveNote() {
@@ -117,6 +142,10 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         if (mNoteWebUrlLayout.getVisibility() == View.VISIBLE) {
             note.setWebLink(mNoteWebUrl.getText().toString());
+        }
+
+        if (mAlreadyAvailableNote != null) {
+            note.setId(mAlreadyAvailableNote.getId());
         }
 
         @SuppressLint("StaticFieldLeak")
@@ -223,6 +252,23 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        if (mAlreadyAvailableNote != null && mAlreadyAvailableNote.getNoteColor() != null && !mAlreadyAvailableNote.getNoteColor().trim().isEmpty()) {
+            switch (mAlreadyAvailableNote.getNoteColor()) {
+                case "#FEBD3D":
+                    layoutMiscellaneous.findViewById(R.id.view_color_2).performClick();
+                    break;
+                case "#FF4842":
+                    layoutMiscellaneous.findViewById(R.id.view_color_3).performClick();
+                    break;
+                case "#3A52FC":
+                    layoutMiscellaneous.findViewById(R.id.view_color_4).performClick();
+                    break;
+                case "#000000":
+                    layoutMiscellaneous.findViewById(R.id.view_color_5).performClick();
+                    break;
+            }
+        }
+
         layoutMiscellaneous.findViewById(R.id.linearLayout_add_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,6 +297,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         gradientDrawable.setColor(Color.parseColor(mSelectedNoteColor));
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         if (intent.resolveActivity(getPackageManager()) != null) {
