@@ -16,14 +16,17 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import net.intensecorp.notesy.R;
 import net.intensecorp.notesy.entities.Note;
+import net.intensecorp.notesy.listeners.NotesListener;
 
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHolder> {
     private List<Note> mNoteList;
+    private NotesListener mNotesListener;
 
-    public NotesAdapter(List<Note> mNoteList) {
+    public NotesAdapter(List<Note> mNoteList, NotesListener mNotesListener) {
         this.mNoteList = mNoteList;
+        this.mNotesListener = mNotesListener;
     }
 
     @NonNull
@@ -33,8 +36,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, final int position) {
         holder.setNote(mNoteList.get(position));
+        holder.mNoteLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNotesListener.onNoteClicked(mNoteList.get(position), position);
+            }
+        });
     }
 
     @Override
