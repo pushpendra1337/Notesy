@@ -75,7 +75,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                     ArrayList<Note> tempList = new ArrayList<>();
                     for (Note note : mNotesSource) {
                         if (note.getTitle().toLowerCase().contains(searchKeyword.toLowerCase())
-                                || note.getTitle().toLowerCase().contains(searchKeyword.toLowerCase())
+                                || note.getSubtitle().toLowerCase().contains(searchKeyword.toLowerCase())
                                 || note.getNoteContent().toLowerCase().contains(searchKeyword.toLowerCase())) {
                             tempList.add(note);
                         }
