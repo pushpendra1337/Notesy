@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import net.intensecorp.notesy.R;
 import net.intensecorp.notesy.adapters.NotesAdapter;
@@ -36,14 +40,9 @@ public class HomeActivity extends AppCompatActivity implements NotesListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ImageView addNoteButton = findViewById(R.id.imageView_add_note);
-        addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
-            }
-        });
-
+        TextInputEditText searchInputField = findViewById(R.id.textInputEditText_search_notes);
         mNotesRecyclerView = findViewById(R.id.recyclerView_notes);
+
         mNotesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
         mNoteList = new ArrayList<>();
@@ -51,6 +50,32 @@ public class HomeActivity extends AppCompatActivity implements NotesListener {
         mNotesRecyclerView.setAdapter(mNotesAdapter);
 
         getNotes(REQUEST_CODE_SHOW_NOTES, false);
+
+        addNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
+            }
+        });
+
+        searchInputField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mNotesAdapter.cancelTimer();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mNoteList.size() != 0) {
+                    mNotesAdapter.searchNotes(s.toString());
+                }
+            }
+        });
     }
 
     private void getNotes(final int requestCode, final boolean isNoteDeleted) {
