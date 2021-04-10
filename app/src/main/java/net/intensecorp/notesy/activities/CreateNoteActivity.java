@@ -84,6 +84,21 @@ public class CreateNoteActivity extends AppCompatActivity {
             setViewOrUpdateNote();
         }
 
+        if (getIntent().getBooleanExtra("isFromQuickActions", false)) {
+            String type = getIntent().getStringExtra("quickActionType");
+            if (type != null) {
+                if (type.equals("image")) {
+                    mSelectedImagePath = getIntent().getStringExtra("imagePath");
+                    mNoteImage.setImageBitmap(BitmapFactory.decodeFile(mSelectedImagePath));
+                    mNoteImage.setVisibility(View.VISIBLE);
+                    findViewById(R.id.imageView_button_remove_image).setVisibility(View.VISIBLE);
+                } else if (type.equals("URL")) {
+                    mNoteWebUrl.setText(getIntent().getStringExtra("URL"));
+                    mNoteWebUrlLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
         findViewById(R.id.imageView_button_remove_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

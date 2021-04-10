@@ -1,16 +1,30 @@
 package net.intensecorp.notesy.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -29,11 +43,14 @@ public class HomeActivity extends AppCompatActivity implements NotesListener {
     private static final int REQUEST_CODE_ADD_NOTE = 1;
     private static final int REQUEST_CODE_UPDATE_NOTE = 2;
     private static final int REQUEST_CODE_SHOW_NOTES = 3;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 4;
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 5;
 
     private RecyclerView mNotesRecyclerView;
     private List<Note> mNoteList;
     private NotesAdapter mNotesAdapter;
     private int mNoteClickedPosition = -1;
+    private AlertDialog mAddUrlDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +93,106 @@ public class HomeActivity extends AppCompatActivity implements NotesListener {
                 }
             }
         });
+
+        findViewById(R.id.imageView_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getApplicationContext(), CreateNoteActivity.class), REQUEST_CODE_ADD_NOTE);
+            }
+        });
+
+        findViewById(R.id.imageView_add_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+                } else {
+                    selectImage();
+                }
+            }
+        });
+
+        findViewById(R.id.imageView_add_web_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddUrlDialog();
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage();
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
+        }
+    }
+
+    private String getPathFromUri(Uri contentUri) {
+        String filePath;
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            filePath = contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex("_data");
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+        return filePath;
+    }
+
+    private void showAddUrlDialog() {
+        if (mAddUrlDialog == null) {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HomeActivity.this);
+            View view = LayoutInflater.from(this).inflate(R.layout.layout_add_url_dialog, (ViewGroup) findViewById(R.id.constraintLayout_add_url_dialog_container));
+            builder.setView(view);
+            mAddUrlDialog = builder.create();
+
+            if (mAddUrlDialog.getWindow() != null) {
+                mAddUrlDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            final TextInputEditText urlField = view.findViewById(R.id.textInputEditText_url_field);
+            urlField.requestFocus();
+
+            view.findViewById(R.id.textView_button_add).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (urlField.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(HomeActivity.this, "Enter URL", Toast.LENGTH_SHORT).show();
+                    } else if (!Patterns.WEB_URL.matcher(urlField.getText().toString()).matches()) {
+                        Toast.makeText(HomeActivity.this, "Enter valid URL", Toast.LENGTH_SHORT).show();
+                    } else {
+                        mAddUrlDialog.dismiss();
+                        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                        intent.putExtra("isFromQuickActions", true);
+                        intent.putExtra("quickActionType", "URL");
+                        intent.putExtra("URL", urlField.getText().toString());
+                        startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+                    }
+                }
+            });
+
+            view.findViewById(R.id.textView_button_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAddUrlDialog.dismiss();
+                }
+            });
+        }
+        mAddUrlDialog.show();
     }
 
     private void getNotes(final int requestCode, final boolean isNoteDeleted) {
@@ -118,6 +235,22 @@ public class HomeActivity extends AppCompatActivity implements NotesListener {
         } else if (requestCode == REQUEST_CODE_UPDATE_NOTE && resultCode == RESULT_OK) {
             if (data != null) {
                 getNotes(REQUEST_CODE_UPDATE_NOTE, data.getBooleanExtra("isNoteDeleted", false));
+            }
+        } else if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri selectedImageURI = data.getData();
+                if (selectedImageURI != null) {
+                    try {
+                        String selectedImagePath = getPathFromUri(selectedImageURI);
+                        Intent intent = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                        intent.putExtra("isFromQuickActions", true);
+                        intent.putExtra("quickActionType", "image");
+                        intent.putExtra("imagePath", selectedImagePath);
+                        startActivityForResult(intent, REQUEST_CODE_ADD_NOTE);
+                    } catch (Exception exception) {
+                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         }
     }
