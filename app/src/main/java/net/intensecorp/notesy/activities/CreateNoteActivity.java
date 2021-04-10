@@ -19,7 +19,6 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -439,7 +438,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 mAddUrlDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
 
-            final EditText urlField = view.findViewById(R.id.editText_url_field);
+            final TextInputEditText urlField = view.findViewById(R.id.textInputEditText_url_field);
             urlField.requestFocus();
 
             view.findViewById(R.id.textView_button_add).setOnClickListener(new View.OnClickListener() {
